@@ -1,4 +1,5 @@
 package org.example.restfull_books.service;
+
 import org.example.restfull_books.entity.User;
 import org.example.restfull_books.exception.CustomGatewayException;
 import org.example.restfull_books.exception.CustomNewNotFoundException;
@@ -15,6 +16,7 @@ public class UserService {
     @Autowired //внедрение зависимости
     private UserRepository userRepository;
 
+    // POST
     public User save(User user) {
         try {
             return userRepository.save(user);
@@ -23,11 +25,13 @@ public class UserService {
         }
     }
 
+    // GET
     public User getByUserId(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new CustomNewNotFoundException("Not Found"));
     }
 
+    // DELETE
     public User deleteUserById(Long id) {
         try {
             if (id == 1000L) {
@@ -46,7 +50,7 @@ public class UserService {
         }
     }
 
-    //PUT
+    // PUT
     public User updateUser(User user) {
         if (!userRepository.existsById(user.getId())) {
             throw new CustomNewNotFoundException("User not found");
@@ -54,16 +58,19 @@ public class UserService {
         return userRepository.save(user); // Сохраняем изменения
     }
 
-
+    //PATCH
     public User updatePartial(Long id, Map<String, Object> updates) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new CustomNewNotFoundException("User not found"));
 
         updates.forEach((key, value) -> {
-            switch (key) {
-                case "firstName" -> user.setFirstName((String) value);
-                case "lastName" -> user.setLastName((String) value);
-                default -> throw new RuntimeException("Invalid field: " + key);
+            if (value != null) {
+                switch (key) {
+                    case "firstName" -> user.setFirstName((String) value);
+                    case "lastName" -> user.setLastName((String) value);
+                    default -> throw new RuntimeException("Invalid field: " + key);
+
+                }
             }
         });
 

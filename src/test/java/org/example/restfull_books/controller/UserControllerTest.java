@@ -58,7 +58,7 @@ public class UserControllerTest {
     @Test
     public void testPutUserSuccess() throws Exception {
         // Создаем исходные данные
-        User existingUser = new User(1L, "Иван", "Иванов");
+       // User existingUser = new User(1L, "Иван", "Иванов");проверить нужен ли
         User updatedUser = new User(1L, "Петр", "Петров");
 
         // Настройка мока для userService.updateUser
